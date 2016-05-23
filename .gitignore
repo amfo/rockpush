@@ -30,3 +30,7 @@
 
 # Debug files
 *.dSYM/
+
+# KDevelop
+*.kdev4
+.kdev4
