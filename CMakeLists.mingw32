@@ -1,0 +1,74 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_POLICY(SET CMP0002 OLD)
+PROJECT(rockpush C)
+
+# the name of the target operating system
+SET(CMAKE_SYSTEM_NAME Windows)
+
+# Choose an appropriate compiler prefix
+
+set(COMPILER_PREFIX "mingw32")
+
+find_program(CMAKE_RC_COMPILER NAMES windres)
+#SET(CMAKE_RC_COMPILER ${COMPILER_PREFIX}-windres)
+find_program(CMAKE_C_COMPILER NAMES ${COMPILER_PREFIX}-gcc)
+SET(CMAKE_C_COMPILER ${COMPILER_PREFIX}-gcc)
+
+# here is the target environment located
+SET(CMAKE_FIND_ROOT_PATH  /usr/${COMPILER_PREFIX})
+
+# adjust the default behaviour of the FIND_XXX() commands:
+# search headers and libraries in the target environment, search
+# programs in the host environment
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+SET(ROCK_SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+SET(ROCK_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+#SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
+
+SET(SDL2_INCLUDE_DIRS C:/mingw_dev_lib/include)
+SET(SDL2_LIBRARIES C:/mingw_dev_lib/lib/)
+
+set(SDL2_LIBDIR "C:/mingw_dev_lib/lib")
+set(SDL2_LIBRARIES "-L${SDL2_LIBDIR}  -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lSDL2_image -lSDL2_ttf -mwindows -static-libgcc -O3")
+
+INCLUDE_DIRECTORIES(
+	${SDL2_INCLUDE_DIRS}
+	${ROCK_INCLUDE_DIR}
+	${ROCK_SRC_DIR}
+)
+
+ADD_EXECUTABLE(
+	rockpush
+	src/rockpush.c
+	src/sprites.c
+	src/map.c
+	src/screen.c
+	src/demoniete.c
+	src/dummy.c
+	src/fly.c
+	src/guzzler.c
+	src/rocco.c
+	src/collision.c
+	src/explosion.c
+	src/gfx.c
+	src/sfx.c
+)
+
+TARGET_LINK_LIBRARIES(
+	rockpush
+	m
+	${SDL2_LIBRARIES}
+)
+
+SET_TARGET_PROPERTIES(
+	rockpush
+	PROPERTIES LINKER_LANGUAGE C
+)
+
+SET(CMAKE_BUILD_TYPE Release)
+install(TARGETS rockpush RUNTIME DESTINATION bin)
+
