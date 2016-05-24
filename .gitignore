@@ -34,3 +34,5 @@
 # KDevelop
 *.kdev4
 .kdev4
+
+build
