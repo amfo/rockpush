@@ -41,10 +41,6 @@ int main(int argc, char **argv)
     set_text();
     sfx_init();
 
-    //Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 4096);
-    //music = Mix_LoadMUS("resources/music/avernus.mod");
-    //Mix_PlayMusic(music, -1);
-
     full_screen = !(argc > 1 && !strcmp(argv[1], "-w"));
 
     screen_data.screen         = screen_init(window, full_screen);
@@ -105,6 +101,7 @@ int8_t rockpush_menu(Rock_Screen *screen_data)
   TTF_Font *menu_font;
   bool done = false;
   Uint32 init_ms;
+  char font_path[128];
   int16_t offset;
   int8_t orientation, total_options, option;
   Sint32 event_option;
@@ -121,7 +118,14 @@ int8_t rockpush_menu(Rock_Screen *screen_data)
         exit(EXIT_FAILURE);
     }
 
-    if ((font_surface = IMG_LoadTexture(screen_data->screen, FONT_PATH)) == NULL) {
+    gfx_check_gpu(screen_data->screen);
+
+    if (gfx_get_low_gpu())
+        sprintf(font_path, "%s", TINY_FONT_PATH);
+    else
+        sprintf(font_path, "%s", FONT_PATH);
+
+    if ((font_surface = IMG_LoadTexture(screen_data->screen, font_path)) == NULL) {
         printf("La fuente bitmap no encontrada %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
     }

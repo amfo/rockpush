@@ -27,12 +27,15 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_events.h>
 
-#define SCREEN_TEXT_WIDTH   1024
-#define SCREEN_TEXT_HEIGHT  160
-#define CHARACTER_WIDTH     64
-#define CHARACTER_HEIGHT    70
-#define NLETTERS            20
-#define FONT_PATH           "images/font.png"
+#define SCREEN_TEXT_WIDTH       1024
+#define SCREEN_TEXT_HEIGHT      160
+#define TARGET_CHARACTER_WIDTH  64
+#define TARGET_CHARACTER_HEIGHT 70
+#define CHARACTER_WIDTH         20
+#define CHARACTER_HEIGHT        22
+#define NLETTERS                20
+#define FONT_PATH               "images/font.png"
+#define TINY_FONT_PATH          "images/font_tiny.png"
 
 typedef struct
 {
@@ -46,5 +49,7 @@ LETTER letters[NLETTERS];
 Uint16 gfx_compute_font_pos(char);
 Uint16 gfx_init_character(void);
 void gfx_init(void);
+void gfx_check_gpu(SDL_Renderer *);
 short gfx_get_sin(short);
+bool gfx_get_low_gpu(void);
 void gfx_text_move(SDL_Renderer *, SDL_Texture *);

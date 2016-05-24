@@ -18,6 +18,7 @@
  *
  */
 
+#include <stdbool.h>
 #include "gfx.h"
 
 /*
@@ -34,6 +35,9 @@ La tecla de Escape sale del juego\
 *** La mafia que controla la mina te explota hasta el punto que no te permitira salir de la mina hasta recoger todos los diamantes ***\"";
 static char characters[] = " !##$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 static char *text_pointer = text;
+static int gfx_character_width  = TARGET_CHARACTER_WIDTH;
+static int gfx_character_height = TARGET_CHARACTER_HEIGHT;
+static bool gfx_low_gpu = false;
 
 Uint16 gfx_compute_font_pos(char scroll_char)
 {
@@ -46,7 +50,7 @@ Uint16 gfx_compute_font_pos(char scroll_char)
     }
 
     while (*p++ != scroll_char) {
-        pos += CHARACTER_WIDTH;
+        pos += gfx_character_width;
     }
 
     if (pos > 0)
@@ -97,8 +101,21 @@ void gfx_init(void)
 
     /* reset letters */
     for (i = 0; i < NLETTERS; ++ i) {
-        letters[i].xpos = -CHARACTER_WIDTH;
+        letters[i].xpos = -gfx_character_width;
     }
+}
+
+void gfx_check_gpu(SDL_Renderer *screen)
+{
+  SDL_RendererInfo render_info;
+
+    SDL_GetRendererInfo(screen, &render_info);
+    if (render_info.max_texture_width < 8192) {
+        gfx_low_gpu = true;
+        gfx_character_width  = CHARACTER_WIDTH;
+        gfx_character_height = CHARACTER_HEIGHT;
+    }
+
 }
 
 short gfx_get_sin(short index)
@@ -106,13 +123,23 @@ short gfx_get_sin(short index)
     return gfx_sin[index];
 }
 
+bool gfx_get_low_gpu(void)
+{
+    return gfx_low_gpu;
+}
+
 void gfx_text_move(SDL_Renderer *screen, SDL_Texture *font_surface)
 {
   static uint32_t displacement = 0;
-  static SDL_Rect frect = {0, 0, CHARACTER_WIDTH, CHARACTER_HEIGHT};
-  static SDL_Rect srect = {0, 0, CHARACTER_WIDTH, CHARACTER_HEIGHT};
+  static SDL_Rect frect = {0, 0, TARGET_CHARACTER_WIDTH, TARGET_CHARACTER_HEIGHT};
+  static SDL_Rect srect = {0, 0, TARGET_CHARACTER_WIDTH, TARGET_CHARACTER_HEIGHT};
   uint32_t i;
   int8_t diff = 0;
+
+    if (gfx_low_gpu) {
+        frect.w = gfx_character_width;
+        frect.h = gfx_character_height;
+    }
 
   /* Desplazamiento de texto */
     if (displacement > 40) {
@@ -121,7 +148,7 @@ void gfx_text_move(SDL_Renderer *screen, SDL_Texture *font_surface)
         for (i = 0; i < NLETTERS; ++ i) {
             /* find an unused letter */
 
-            if (letters[i].xpos < -CHARACTER_WIDTH) {
+            if (letters[i].xpos < -TARGET_CHARACTER_WIDTH) {
                 letters[i].xpos      = SCREEN_TEXT_WIDTH;
                 letters[i].sin_index = 0;
                 letters[i].font_pos  = gfx_init_character();
@@ -137,25 +164,15 @@ void gfx_text_move(SDL_Renderer *screen, SDL_Texture *font_surface)
     for (i = 0; i < NLETTERS; ++i) {
         letters[i].xpos -= 3;
 
-        if (letters[i].xpos  > -CHARACTER_WIDTH) {
+        if (letters[i].xpos > -TARGET_CHARACTER_WIDTH) {
             letters[i].sin_index += 8;
             letters[i].sin_index %= 540;
 
             /* blit letter to screen */
 
-            if (letters[i].xpos < 0) {
-                /* correct font and position when reaching left border */
-
-                diff = 0 + letters[i].xpos;
-                frect.x = letters[i].font_pos - 1 - diff;
-                frect.w = CHARACTER_WIDTH +  diff;
-                srect.x = 0;
-            }
-            else {
-                frect.x = letters[i].font_pos - 1;
-                frect.w = CHARACTER_WIDTH;
-                srect.x = letters[i].xpos;
-            }
+            frect.x = letters[i].font_pos - 1;
+            frect.w = gfx_character_width;
+            srect.x = letters[i].xpos;
 
             srect.y = 560 + gfx_get_sin(letters[i].sin_index);
 
