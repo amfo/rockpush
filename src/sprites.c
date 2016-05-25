@@ -282,7 +282,6 @@ void sprites_set_sprite_from_map(Rock_Screen *screen_data, Rock_Scroll_Map *map)
         spr = sprite_get_object(blood_index);
         target.x += spr->offset_x;
         target.y += spr->offset_y;
-
         sprite_get_current_frame(&object_frame, spr);
         result = screen_copy_texture(screen_data, &object_frame, &target);
     }
@@ -596,7 +595,7 @@ void sprite_get_current_frame(SDL_Rect *object_frame, Rock_Sprite *spr)
 {
   FRAME *current_frame;
 
-    if (!spr->frames)
+    if (spr->frames == NULL)
         return;
 
     *object_frame = spr->frames->size;

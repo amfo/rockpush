@@ -38,9 +38,13 @@ void map_load(Rock_Scroll_Map *map)
 
     if ((fp = fopen("rockpush.map", "rb"))) {
         /* Originalmente había un margen lateral y superior como buffer. Parcheamos con un borde */
-        memset(map->rockmap, GRASS, (uint8_t)MAXMAP_MASK);
-        memset(map->deaths, -1, (uint8_t)MAXMAP_MASK);
-        memset(map->objects_map, -1, (uint8_t)MAXMAP_MASK);
+        for(y = 0; y < MAP_MASK_Y; y ++){
+            for(x = 0; x < MAP_MASK_X; x ++){
+                map->rockmap[x][y]     = GRASS;
+                map->deaths[x][y]      = EMPTY;
+                map->objects_map[x][y] = EMPTY;
+            }
+        }
 
         fseek(fp, map->level * (MAXMAP + 4), 0);
         map->diamonds = getw(fp);
@@ -111,8 +115,8 @@ void map_get_objets_entities(Rock_Scroll_Map *map)
     map->rockmap[x][y] = ROCCO;
     map_set_screen_position(map, x, y);
 
-    for (y = 0; y < MAXMAP_UNITS_Y; y ++) {
-        for (x = 0; x < MAXMAP_UNITS_X; x ++) {
+    for (y = 1; y < MAXMAP_UNITS_Y; y ++) {
+        for (x = 1; x < MAXMAP_UNITS_X; x ++) {
             map->rockmap[x][y] = patch_older_map(map->rockmap[x][y]);
             map->deaths[x][y]  = -1;
 
