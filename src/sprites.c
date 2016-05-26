@@ -793,31 +793,32 @@ void sprites_falls(Rock_Scroll_Map *map, Rock_Sprite *spr)
 
             if (spr->type_object == BOMB)
                 explosion_set(map, spr);
+            else {
 
-            switch (object->type_object) {
-                case DIAMOND:
-                case COIN:
-                case ROCK:
-                    spr->v_move = 0;
-                    break;
+                switch (object->type_object) {
+                    case DIAMOND:
+                    case COIN:
+                    case ROCK:
+                        spr->v_move = 0;
+                        break;
 
-                case BOMB:
-                    spr->v_move = 0;
-                    explosion_set(map, object);
-                    break;
+                    case BOMB:
+                        spr->v_move = 0;
+                        explosion_set(map, object);
+                        break;
 
-                case EXPLOSION:
-                    break;
+                    case EXPLOSION:
+                        break;
 
-                case FLY:
-                    fly_to_diamonds(map, object);
-                    break;
+                    case FLY:
+                        fly_to_diamonds(map, object);
+                        break;
 
-                default:
-                    sprites_death(map, object, true);
-                    break;
+                    default:
+                        sprites_death(map, object, true);
+                        break;
+                }
             }
-
         }
 
         collision.object_type = OBJECT_STATIC;
@@ -1123,6 +1124,9 @@ void sprites_push_off(Rock_Scroll_Map *map)
 void sprites_death(Rock_Scroll_Map *map, Rock_Sprite *spr, bool blood)
 {
   int16_t offset_x, offset_y, death;
+
+    if (spr->type_object == ROCCO_BURNED)
+        return;
 
     death = (spr->type_object == ROCCO) ? ROCCO_DEATH : BLOOD;
 
