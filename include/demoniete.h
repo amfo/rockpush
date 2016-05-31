@@ -24,4 +24,4 @@
 
 void demoniete_move(Rock_Scroll_Map *, Rock_Sprite *);
 void demoniete_change_direction(Rock_Sprite *);
-int16_t demoniete_falls(Rock_Scroll_Map *, Rock_Sprite *);
+bool demoniete_falls(Rock_Scroll_Map *, Rock_Sprite *);

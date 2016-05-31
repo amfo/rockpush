@@ -93,7 +93,7 @@ void demoniete_change_direction(Rock_Sprite *demoniete)
  * @param *demoniente Puntero al sprite
  */
 
-int16_t demoniete_falls(Rock_Scroll_Map *map, Rock_Sprite *demoniete)
+bool demoniete_falls(Rock_Scroll_Map *map, Rock_Sprite *demoniete)
 {
   bool falls = false;
   int16_t pos_x, pos_y;
