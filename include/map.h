@@ -23,7 +23,7 @@
 void map_load(Rock_Scroll_Map *);
 void map_show(Rock_Screen *, Rock_Scroll_Map *, bool);
 void map_get_objets_entities(Rock_Scroll_Map *);
-uint8_t patch_older_map(uint8_t);
+uint8_t patch_older_map(uint8_t map_value);
 void map_set_screen_position(Rock_Scroll_Map *, int8_t, int8_t);
 void map_move(Rock_Scroll_Map *, uint8_t);
 void map_set_door(Rock_Scroll_Map *, uint8_t);
