@@ -1,7 +1,7 @@
 # rockpush
 videogame
 
-[![Rockpush(https://img.youtube.com/vi/fOq6kgN9nt8/0.jpg)](https://www.youtube.com/watch?v=fOq6kgN9nt8)
+[![Rockpush](https://img.youtube.com/vi/fOq6kgN9nt8/0.jpg)](https://www.youtube.com/watch?v=fOq6kgN9nt8)
 
 Instrucciones de compilación para GNU/Linux:
 
