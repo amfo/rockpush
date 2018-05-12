@@ -31,4 +31,4 @@ Instrucciones de compilación para Windows:
 		mingw32-make
 		
 	- Se puede descargar una versión precompilada desde:
-		https://mega.nz/#!lcwWSQAR
+		https://mega.nz/#!lcwWSQAR!Y5VZlw77mPll9Ec6L3mdh-4cgpHcrJ2dZJfw_Sg5WvA
