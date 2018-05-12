@@ -31,4 +31,4 @@ Instrucciones de compilación para Windows:
 		mingw32-make
 		
 	- Se puede descargar una versión precompilada desde:
-		https://www.dropbox.com/s/yc61x5oc1inplky/rockpush_win32.zip?dl=0
+		https://mega.nz/#!lcwWSQAR
